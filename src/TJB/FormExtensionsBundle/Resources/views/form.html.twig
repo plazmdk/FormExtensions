@@ -1,0 +1,16 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block async_entity_widget %}
+    {% spaceless %}
+        <div {{ block('widget_container_attributes') }}>
+            <input type="button" class="btn btn-info selectAsyncType" data-class="{{ form.vars['class'] }}" value="{{ "add"|trans }}"/>
+            {% for value in form.vars['value'] %}
+                <div>
+                    <input type="hidden" name="{{ form.vars['full_name'] }}" value="{{ attribute(value, form.vars['valueField'])  }}"/>
+                    {{ attribute(value, form.vars['titleField']) }}
+                    <a href="#">{{ "remove"|trans }}</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endspaceless %}
+{% endblock async_entity_widget %}
