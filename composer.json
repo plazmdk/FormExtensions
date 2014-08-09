@@ -1,5 +1,5 @@
 {
-    "name": "TJB/FormExtensions",
+    "name": "tjb/formextensions",
     "autoload": {
         "psr-0" : {
             "TJB\\TJBFormExtensionsBundle" : "src"
