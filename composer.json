@@ -2,7 +2,7 @@
     "name": "tjb/formextensions",
     "autoload": {
         "psr-0" : {
-            "TJB\\TJBFormExtensionsBundle" : ""
+            "TJB\\FormExtensionsBundle" : ""
         }
     },
     "target-dir": "TJB/FormExtensions",
