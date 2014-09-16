@@ -20,7 +20,6 @@ use TJB\FormExtensionsBundle\Interfaces\SearchableTree;
 class TreePickerController extends Controller {
     /**
      * @Route("__treepicker_gettree", name="tjb_treepicker_gettree", options={"expose"=true})
-     * @Secure("ROLE_ADMIN")
      */
     public function getTreeAction(Request $request) {
         $class = $request->query->get('class');
