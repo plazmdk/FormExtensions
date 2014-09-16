@@ -1,6 +1,6 @@
 services:
     tjb_formextension.form.type.treepicker:
         class: TJB\FormExtensionsBundle\Form\Type\TreePickerType
-        arguments: [ @Doctrine ]
+        arguments: [ @Doctrine, @Router ]
         tags:
             - { name: form.type, alias: tjb_treepicker_type }

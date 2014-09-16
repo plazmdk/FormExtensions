@@ -9,11 +9,13 @@
 namespace TJB\FormExtensionsBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\Form\EventListener\MergeDoctrineCollectionListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Routing\RouterInterface;
 use TJB\FormExtensionsBundle\Form\DataTransformer\TreePickerMultiTransformer;
 use TJB\FormExtensionsBundle\Form\EventListener\TreePickerMultiInputListener;
 
@@ -23,16 +25,19 @@ class TreePickerType extends AbstractType
      * @var ManagerRegistry
      */
     private $managerRegistry;
+    /**
+     * @var RouterInterface
+     */
+    private $router;
 
-    function __construct($managerRegistry)
+    function __construct($managerRegistry, $router)
     {
         $this->managerRegistry = $managerRegistry;
+        $this->router = $router;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->setAttribute('tree_route', $options['tree_route']);
-
         if ($options['multiple']) {
             $builder->addViewTransformer(new TreePickerMultiTransformer($this->managerRegistry->getManagerForClass($options['class']), $options));
             $builder->addEventSubscriber(new TreePickerMultiInputListener($this->managerRegistry->getManagerForClass($options['class']), $options));
@@ -45,17 +50,18 @@ class TreePickerType extends AbstractType
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['tree_route'] = $form->getConfig()->getAttribute('tree_route');
+        $view->vars['tree_route'] = $this->router->generate($options['tree_route'],array('class' => $options['class'], 'title' => $options['property']));
         $view->vars['prototype'] = $form->getConfig()->getAttribute('prototype')->createView($view);
+        $view->vars['buttontext'] = $options['buttontext'];
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'tree_route' => null,
+            'tree_route' => 'tjb_treepicker_gettree',
             'multiple' => false,
             'property' => 'title',
-            'by_reference' => false
+            'buttontext' => 'treepicker.select'
         ));
 
         $resolver->setRequired(array(

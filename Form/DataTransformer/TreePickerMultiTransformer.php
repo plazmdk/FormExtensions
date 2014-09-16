@@ -38,7 +38,8 @@ class TreePickerMultiTransformer implements DataTransformerInterface
         foreach ($object as $object) {
             $result[] = array(
                 "id" => $propertyAccessor->getValue($object, $idField),
-                "title" => $propertyAccessor->getValue($object, $this->options['property'])
+                "title" => $propertyAccessor->getValue($object, $this->options['property']),
+                "parentPath" => $object->getParentPath()
             );
         }
 
@@ -49,8 +50,8 @@ class TreePickerMultiTransformer implements DataTransformerInterface
     {
         $result = array();
 
-        foreach ($values as $value) {
-            $result[] = $this->manager->find($this->options['class'], $value['id']);
+        foreach ($values as $index => $value) {
+            $result[$index] = $this->manager->find($this->options['class'], $value['id']);
         }
 
         return new ArrayCollection($result);

@@ -1,17 +1,17 @@
 {% block tjb_treepicker_type_widget %}
     {% spaceless %}
-        <div class="treepicker">
-            <a href="#" class="treepicker-select btn btn-success" data-toggle="modal" data-target="#treepicker_{{ form.vars.id }}">{{ "treepicker.select"|trans }}</a>
+        <div class="treepicker-wrapper">
+            <a href="#" class="treepicker-select btn btn-success" data-toggle="modal" data-target="#treepicker_{{ form.vars.id }}">{{ buttontext|trans }}</a>
 
             <div class="modal fade" id="treepicker_{{ form.vars.id }}" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{ "filepicker.close"|trans }}</span></button>
-                            <h4 class="modal-title">{{ "lal"|trans }}</h4>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{ "treepicker.close"|trans }}</span></button>
+                            <h4 class="modal-title">{{ buttontext|trans }}</h4>
                         </div>
-                        <div class="modal-body filepicker-content">
-
+                        <div class="modal-body treepicker-content">
+                            <div class="treepicker treepicker-ajax" data-treedata="{{ tree_route }}"></div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" data-dismiss="modal">{{ "treepicker.close"|trans }}</button>
@@ -32,6 +32,12 @@
 {% block tjb_treepicker_item_widget %}
     <div class="treepicker-item">
         {{ form_widget(form.id) }}
-        <span class="treepicker-item-title">{{ form.title.vars.value }}</span>
+        {% for parent in parentPath %}
+            <span class="treepicker-item-parent">
+                <span class="treepicker-item-parent-title">{{ parent.title }}</span>
+                <span class="treepicker-item-parent-sep"> / </span>
+            </span>
+        {% endfor %}
+        <span class="treepicker-item-title">{{ title }}</span>
     </div>
 {% endblock %}
